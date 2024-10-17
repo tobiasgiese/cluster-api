@@ -59,10 +59,6 @@ func (webhook *ExtensionConfig) Default(_ context.Context, obj runtime.Object) e
 	if !ok {
 		return apierrors.NewBadRequest(fmt.Sprintf("expected an ExtensionConfig but got a %T", obj))
 	}
-	// Default NamespaceSelector to an empty LabelSelector, which matches everything, if not set.
-	if extensionConfig.Spec.NamespaceSelector == nil {
-		extensionConfig.Spec.NamespaceSelector = &metav1.LabelSelector{}
-	}
 	if extensionConfig.Spec.ClientConfig.Service != nil {
 		if extensionConfig.Spec.ClientConfig.Service.Port == nil {
 			extensionConfig.Spec.ClientConfig.Service.Port = ptr.To[int32](443)
@@ -221,14 +217,8 @@ func validateExtensionConfigSpec(e *runtimev1.ExtensionConfig) field.ErrorList {
 			}
 		}
 	}
-	if e.Spec.NamespaceSelector == nil {
-		allErrs = append(allErrs, field.Required(
-			specPath.Child("namespaceSelector"),
-			"must be defined",
-		))
-	}
 
-	if _, err := metav1.LabelSelectorAsSelector(e.Spec.NamespaceSelector); err != nil {
+	if _, err := metav1.LabelSelectorAsSelector(&e.Spec.NamespaceSelector); err != nil {
 		allErrs = append(allErrs, field.Invalid(
 			specPath.Child("namespaceSelector"),
 			e.Spec.NamespaceSelector,

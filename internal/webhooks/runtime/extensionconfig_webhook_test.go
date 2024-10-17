@@ -50,7 +50,7 @@ func TestExtensionConfigValidationFeatureGated(t *testing.T) {
 			ClientConfig: runtimev1.ClientConfig{
 				URL: ptr.To("https://extension-address.com"),
 			},
-			NamespaceSelector: &metav1.LabelSelector{},
+			NamespaceSelector: metav1.LabelSelector{},
 		},
 	}
 	updatedExtension := extension.DeepCopy()
@@ -129,7 +129,7 @@ func TestExtensionConfigDefault(t *testing.T) {
 	t.Run("for Extension", util.CustomDefaultValidateTest(ctx, extensionConfig, extensionConfigWebhook))
 
 	g.Expect(extensionConfigWebhook.Default(ctx, extensionConfig)).To(Succeed())
-	g.Expect(extensionConfig.Spec.NamespaceSelector).To(BeComparableTo(&metav1.LabelSelector{}))
+	g.Expect(extensionConfig.Spec.NamespaceSelector).To(BeComparableTo(metav1.LabelSelector{}))
 	g.Expect(extensionConfig.Spec.ClientConfig.Service.Port).To(BeComparableTo(ptr.To[int32](443)))
 }
 
@@ -198,7 +198,7 @@ func TestExtensionConfigValidate(t *testing.T) {
 	extensionWithInvalidServicePort.Spec.ClientConfig.Service.Port = ptr.To[int32](90000)
 
 	extensionWithInvalidNamespaceSelector := extensionWithService.DeepCopy()
-	extensionWithInvalidNamespaceSelector.Spec.NamespaceSelector = &metav1.LabelSelector{
+	extensionWithInvalidNamespaceSelector.Spec.NamespaceSelector = metav1.LabelSelector{
 		MatchExpressions: []metav1.LabelSelectorRequirement{
 			{
 				Key:      "foo",
@@ -208,7 +208,7 @@ func TestExtensionConfigValidate(t *testing.T) {
 		},
 	}
 	extensionWithValidNamespaceSelector := extensionWithService.DeepCopy()
-	extensionWithValidNamespaceSelector.Spec.NamespaceSelector = &metav1.LabelSelector{
+	extensionWithValidNamespaceSelector.Spec.NamespaceSelector = metav1.LabelSelector{
 		MatchExpressions: []metav1.LabelSelectorRequirement{
 			{
 				Key:      "foo",

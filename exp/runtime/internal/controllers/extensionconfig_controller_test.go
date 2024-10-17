@@ -380,7 +380,6 @@ func fakeExtensionConfigForURL(namespace, name, url string) *runtimev1.Extension
 			ClientConfig: runtimev1.ClientConfig{
 				URL: ptr.To(url),
 			},
-			NamespaceSelector: nil,
 		},
 	}
 }

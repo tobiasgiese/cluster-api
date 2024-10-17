@@ -448,7 +448,7 @@ func extensionConfig(name, namespace, extensionServiceNamespace, extensionServic
 					Namespace: extensionServiceNamespace,
 				},
 			},
-			NamespaceSelector: &metav1.LabelSelector{
+			NamespaceSelector: metav1.LabelSelector{
 				// Note: we are limiting the test extension to be used by the namespace where the test is run.
 				MatchExpressions: []metav1.LabelSelectorRequirement{
 					{

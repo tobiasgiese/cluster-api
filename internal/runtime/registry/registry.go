@@ -231,7 +231,7 @@ func (r *extensionRegistry) add(extensionConfig *runtimev1.ExtensionConfig) erro
 	r.remove(extensionConfig)
 
 	// Create a selector from the NamespaceSelector defined in the extensionConfig spec.
-	selector, err := metav1.LabelSelectorAsSelector(extensionConfig.Spec.NamespaceSelector)
+	selector, err := metav1.LabelSelectorAsSelector(&extensionConfig.Spec.NamespaceSelector)
 	if err != nil {
 		return errors.Wrapf(err, "failed to add ExtensionConfig %q to registry: failed to create namespaceSelector", extensionConfig.Name)
 	}

@@ -411,7 +411,7 @@ func (r *Reconciler) extensionConfigToClusterClass(ctx context.Context, o client
 	}
 
 	clusterClasses := clusterv1.ClusterClassList{}
-	selector, err := metav1.LabelSelectorAsSelector(ext.Spec.NamespaceSelector)
+	selector, err := metav1.LabelSelectorAsSelector(&ext.Spec.NamespaceSelector)
 	if err != nil {
 		return nil
 	}

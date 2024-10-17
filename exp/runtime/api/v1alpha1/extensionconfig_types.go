@@ -33,7 +33,7 @@ type ExtensionConfigSpec struct {
 	// on whether the namespace for that object matches the selector.
 	// Defaults to the empty LabelSelector, which matches all objects.
 	// +optional
-	NamespaceSelector *metav1.LabelSelector `json:"namespaceSelector,omitempty"`
+	NamespaceSelector metav1.LabelSelector `json:"namespaceSelector"`
 
 	// Settings defines key value pairs to be passed to all calls
 	// to all supported RuntimeExtensions.

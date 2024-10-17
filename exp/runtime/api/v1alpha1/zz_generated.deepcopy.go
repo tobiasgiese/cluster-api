@@ -21,7 +21,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/cluster-api/api/v1beta1"
 )
@@ -119,11 +118,7 @@ func (in *ExtensionConfigList) DeepCopyObject() runtime.Object {
 func (in *ExtensionConfigSpec) DeepCopyInto(out *ExtensionConfigSpec) {
 	*out = *in
 	in.ClientConfig.DeepCopyInto(&out.ClientConfig)
-	if in.NamespaceSelector != nil {
-		in, out := &in.NamespaceSelector, &out.NamespaceSelector
-		*out = new(v1.LabelSelector)
-		(*in).DeepCopyInto(*out)
-	}
+	in.NamespaceSelector.DeepCopyInto(&out.NamespaceSelector)
 	if in.Settings != nil {
 		in, out := &in.Settings, &out.Settings
 		*out = make(map[string]string, len(*in))

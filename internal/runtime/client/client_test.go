@@ -549,7 +549,7 @@ func TestClient_CallExtension(t *testing.T) {
 				URL:      ptr.To("https://127.0.0.1/"),
 				CABundle: testcerts.CACert,
 			},
-			NamespaceSelector: &metav1.LabelSelector{},
+			NamespaceSelector: metav1.LabelSelector{},
 		},
 		Status: runtimev1.ExtensionConfigStatus{
 			Handlers: []runtimev1.ExtensionHandler{
@@ -572,7 +572,7 @@ func TestClient_CallExtension(t *testing.T) {
 				URL:      ptr.To("https://127.0.0.1/"),
 				CABundle: testcerts.CACert,
 			},
-			NamespaceSelector: &metav1.LabelSelector{}},
+			NamespaceSelector: metav1.LabelSelector{}},
 		Status: runtimev1.ExtensionConfigStatus{
 			Handlers: []runtimev1.ExtensionHandler{
 				{
@@ -887,7 +887,7 @@ func TestClient_CallAllExtensions(t *testing.T) {
 				URL:      ptr.To("https://127.0.0.1/"),
 				CABundle: testcerts.CACert,
 			},
-			NamespaceSelector: &metav1.LabelSelector{},
+			NamespaceSelector: metav1.LabelSelector{},
 		},
 		Status: runtimev1.ExtensionConfigStatus{
 			Handlers: []runtimev1.ExtensionHandler{
