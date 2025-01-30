@@ -282,6 +282,31 @@ func addObjectRowV1Beta2(prefix string, tbl *tablewriter.Table, objectTree *tree
 		rowDescriptor.message = ""
 	}
 
+	multilinePrefix := getMultilinePrefix(prefix)
+	// If it is the top-level root object, set the multiline prefix to a pipe.
+	if prefix == "" {
+		multilinePrefix = pipe
+	}
+	// If the multiline prefix is empty, we have to ensure that even multiline conditions on this root object are indented.
+	if strings.TrimSpace(multilinePrefix) == "" {
+		filler := strings.Repeat(" ", 10)
+		childrenPipe := indent
+		if objectTree.IsObjectWithChild(obj.GetUID()) {
+			childrenPipe = pipe
+		}
+		// We have to set the childCount to 3 as we want to fake the childPrefix for the root object.
+		// We just want to indent the multiline message for the Ready condition.
+		childPrefix := getChildPrefix(prefix+childrenPipe+filler, 0, 3)
+		multilinePrefix = getMultilinePrefix(childPrefix)
+	}
+
+	// If it is the last object and last condition we can remove the prefix completely.
+	objectsByParentLen := len(objectTree.GetObjectsByParent(obj.GetUID()))
+	otherConditionsLen := len(tree.GetAllV1Beta2Conditions(obj))
+	if (!tree.IsShowConditionsObject(obj) && objectsByParentLen == 0) || objectsByParentLen+otherConditionsLen == 0 {
+		multilinePrefix = ""
+	}
+
 	// Add the row representing the object that includes
 	// - The row name with the tree view prefix.
 	// - Replica counters
@@ -306,7 +331,7 @@ func addObjectRowV1Beta2(prefix string, tbl *tablewriter.Table, objectTree *tree
 
 	for _, m := range msg[1:] {
 		tbl.Append([]string{
-			getMultilinePrefix(gray.Sprint(prefix)),
+			gray.Sprint(multilinePrefix),
 			"",
 			"",
 			"",
